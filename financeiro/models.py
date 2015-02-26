@@ -17,8 +17,38 @@ agora = timezone.now()
 
 class Cidade(models.Model):
     cidade = models.CharField(max_length=30)
-    estado = models.CharField(max_length=2, help_text="Sigla do Estado.")
-    pais = models.CharField("país", max_length=30, default="Brasil")
+    ESTADOS_CHOICES = (
+        ('AC', 'Acre'),
+        ('AL', 'Alagoas'),
+        ('AP', 'Amapá'),
+        ('AM', 'Amazonas'),
+        ('BA', 'Bahia'),
+        ('CE', 'Ceará'),
+        ('DF', 'Distrito Federal'),
+        ('ES', 'Espírito Santo'),
+        ('GO', 'Goiás'),
+        ('MA', 'Maranhão'),
+        ('MT', 'Mato Grosso'),
+        ('MS', 'Mato Grosso do Sul'),
+        ('MG', 'Minas Gerais'),
+        ('PA', 'Pará'),
+        ('PB', 'Paraíba'),
+        ('PR', 'Paraná'),
+        ('PE', 'Pernambuco'),
+        ('PI', 'Piauí'),
+        ('RJ', 'Rio de Janeiro'),
+        ('RN', 'Rio Grande do Norte'),
+        ('RS', 'Rio Grande do Sul'),
+        ('RO', 'Rondônia'),
+        ('RR', 'Roraima'),
+        ('SC', 'Santa Catarina'),
+        ('SP', 'São Paulo'),
+        ('SE', 'Sergipe'),
+        ('TO', 'Tocantins'),
+    )
+    estado = models.CharField(max_length=2,
+                              choices=ESTADOS_CHOICES,
+                              default='PR')
     anotacoes = models.TextField("anotações", blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 

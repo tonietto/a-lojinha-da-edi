@@ -64,7 +64,7 @@ class Peca(models.Model):
     slug = models.SlugField(help_text='URL. Ex.: blusinha-guardachuvas')
     tags = models.ManyToManyField(TagsDaPeca, related_name='nome')
     marca = models.ForeignKey('financeiro.Marca')
-    cor = models.ForeignKey(CorDaPeca, blank=True, null=True)
+    cores = models.ManyToManyField(CorDaPeca, blank=True, null=True)
     tamanho = models.ForeignKey(TamanhoDaPeca)
     """
     ex.: PPP, P, 36
