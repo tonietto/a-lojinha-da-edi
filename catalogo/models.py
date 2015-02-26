@@ -106,9 +106,18 @@ class Peca(models.Model):
                                                      default=Decimal('0.00'),
                                                      validators=[MinValueValidator(Decimal('0.00'))])
     pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
+    codigo = models.PositiveSmallIntegerField("código", db_column='codigo_automatico', null=True)
 
     def __str__(self):
         return self.nome
+
+    @property
+    def codigo_automatico(self):
+        return self._codigo_automatico
+
+    @codigo_automatico.setter
+    def codigo_automatico(self, value):
+        self._codigo_automatico = self.id
 
     class Meta:
         ordering = ('pub_date', 'nome')

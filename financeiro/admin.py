@@ -29,6 +29,7 @@ class PecaInline(admin.TabularInline):
 
 class ParcelaInline(admin.TabularInline):
     model = Parcela
+    max_num = 4
     extra = 0
 
 
