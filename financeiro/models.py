@@ -6,9 +6,11 @@ from django.utils import timezone
 
 NOTA_CHOICES = (
     ('0', 'Péssimo'),
-    ('1', 'Regular'),
-    ('2', 'Bom'),
-    ('3', 'Ótimo'),
+    ('1', 'Ruim'),
+    ('2', 'Regular'),
+    ('3', 'Bom'),
+    ('4', 'Ótimo'),
+    ('5', 'Excelente'),
 )
 
 
@@ -52,6 +54,12 @@ class Cidade(models.Model):
     anotacoes = models.TextField("anotações", blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
+    def __str__(self):
+        return self.cidade
+
+    class Meta:
+        ordering = ('cidade', 'pub_date')
+
 
 class Shopping(models.Model):
     nome = models.CharField(max_length=30)
@@ -59,7 +67,7 @@ class Shopping(models.Model):
     rua = models.CharField(max_length=150, blank=True)
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
     bairro = models.CharField(max_length=30, blank=True)
-    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=1)
+    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
@@ -77,7 +85,7 @@ class Guia(models.Model):
     email = models.EmailField(max_length=254, blank=True)
     telefone = models.PositiveSmallIntegerField(blank=True, null=True)
     shoppings = models.ManyToManyField(Shopping)
-    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=1)
+    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
@@ -105,7 +113,7 @@ class Loja(models.Model):
     cidade = models.ForeignKey(Cidade)
     email = models.EmailField(max_length=254, blank=True)
     telefone = models.PositiveSmallIntegerField(blank=True, null=True)
-    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=1)
+    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
@@ -118,7 +126,7 @@ class Loja(models.Model):
 
 class Marca(models.Model):
     nome = models.CharField(max_length=30)
-    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=1)
+    nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
     imagem = models.ImageField(upload_to='imagem_da_marca', blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
@@ -132,7 +140,7 @@ class Marca(models.Model):
 
 class Viagem(models.Model):
     nome = models.CharField(max_length=150)
-    data_da_viagem = models.DateField(default=agora)
+    data = models.DateField(default=agora)
     cidade = models.ForeignKey(Cidade)
     custo_combustivel = models.DecimalField("combustível",
                                             max_digits=5,
@@ -175,14 +183,19 @@ class Viagem(models.Model):
         return self.nome
 
     class Meta:
-        ordering = ('data_da_viagem', 'pub_date')
+        ordering = ('data', 'pub_date')
         verbose_name_plural = 'viagens'
 
 
-class NotaFiscal(models.Model):
+class Recibo(models.Model):
     loja = models.ForeignKey(Loja)
-    numero = models.PositiveSmallIntegerField("número")
-    data_da_nota = models.DateField(default=agora)
+    RECIBO_CHOICES = (
+        ('1', 'Romaneio'),
+        ('2', 'Nota Fiscal'),
+    )
+    tipo = models.PositiveSmallIntegerField(choices=RECIBO_CHOICES, default=1)
+    numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
+    data = models.DateField(default=agora)
     viagem = models.ForeignKey(Viagem)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
@@ -190,19 +203,18 @@ class NotaFiscal(models.Model):
         return self.nome
 
     class Meta:
-        ordering = ('data_da_nota', 'pub_date')
-        verbose_name_plural = 'Notas Fiscais'
+        ordering = ('data', 'pub_date')
 
 
 class Venda(models.Model):
-    numero_da_venda = models.PositiveSmallIntegerField("número da venda", unique=True)
     cliente = models.CharField(max_length=250, default="",
                                blank=True)
-    data_da_venda = models.DateField(default=agora)
+    data = models.DateField(default=agora)
     FORMA_DE_PAGAMENTO_CHOICES = (
         ('DIN', 'dinheiro'),
         ('CAD', 'caderninho'),
         ('CAR', 'cartão'),
+        ('PGS', 'PagSeguro'),
     )
     forma_de_pagamento = models.CharField(max_length=3,
                                           choices=FORMA_DE_PAGAMENTO_CHOICES,
@@ -244,4 +256,29 @@ class Venda(models.Model):
         return self.nome
 
     class Meta:
-        ordering = ('data_da_venda', 'pub_date')
+        ordering = ('data', 'pub_date')
+
+
+class Peca(models.Model):
+    venda = models.ForeignKey(Venda)
+    peca = models.ManyToManyField('catalogo.Peca', verbose_name='peça')
+    quantidade = models.PositiveSmallIntegerField(default=1)
+    valor_venda = models.DecimalField("valor venda", max_digits=5,
+                                      decimal_places=2,
+                                      blank=True, null=True)
+
+    def __str__(self):
+        return self.peca
+
+    class Meta:
+        verbose_name = "peça"
+
+
+class Parcela(models.Model):
+    venda = models.ForeignKey(Venda)
+    numero = models.PositiveSmallIntegerField("número da parcela", default=0)
+    data = models.DateField(default=agora)
+    valor = models.DecimalField(max_digits=5,
+                                decimal_places=2,
+                                default=Decimal('0.00'),
+                                validators=[MinValueValidator(Decimal('0.00'))])

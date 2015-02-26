@@ -13,7 +13,7 @@ class PecaAdmin(admin.ModelAdmin):
                            'marca',
                            'tamanho',
                            'genero',
-                           'cor',
+                           'cores',
                            'quantidade_comprada',
                            'quantidade_em_estoque',
                            ]}),
@@ -24,6 +24,7 @@ class PecaAdmin(admin.ModelAdmin):
                                 'imagem_4'
                                 ]}),
         ('Financeiro',  {'fields': [
+                                   'recibo',
                                    'custo_unitario',
                                    'preco_unitario',
                                    'preco_unitario_promocional'

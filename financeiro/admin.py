@@ -1,15 +1,15 @@
 from django.contrib import admin
 from financeiro.models import Cidade, Shopping, Guia, Loja, Marca, Viagem
-from financeiro.models import NotaFiscal, Venda
+from financeiro.models import Recibo, Venda, Peca, Parcela
 
 
 class ViagemAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,  {'fields': [
-                            'nome',
-                            'data_da_viagem',
-                            'cidade',
-                            ]}),
+        (None,      {'fields': [
+                               'nome',
+                               'data',
+                               'cidade',
+                               ]}),
         ('Custos',  {'fields': [
                                'custo_combustivel',
                                'custo_pedagios',
@@ -21,11 +21,36 @@ class ViagemAdmin(admin.ModelAdmin):
                                ]}),
     ]
 
+
+class PecaInline(admin.TabularInline):
+    model = Peca
+    extra = 1
+
+
+class ParcelaInline(admin.TabularInline):
+    model = Parcela
+    extra = 0
+
+
+class VendaAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,       {'fields': [
+                                'cliente',
+                                'data',
+                                'forma_de_pagamento',
+                                'forma_caderninho',
+                                'forma_cartao',
+                                'numero_de_parcelas',
+                                ]}),
+    ]
+    inlines = [PecaInline, ParcelaInline]
+
+
 admin.site.register(Viagem, ViagemAdmin)
+admin.site.register(Venda, VendaAdmin)
 admin.site.register(Cidade)
 admin.site.register(Shopping)
 admin.site.register(Guia)
 admin.site.register(Loja)
 admin.site.register(Marca)
-admin.site.register(NotaFiscal)
-admin.site.register(Venda)
+admin.site.register(Recibo)

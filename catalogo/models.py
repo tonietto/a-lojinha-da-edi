@@ -87,12 +87,9 @@ class Peca(models.Model):
     quantidade_comprada = models.PositiveSmallIntegerField(default=1)
     quantidade_em_estoque = models.PositiveSmallIntegerField(default=1)
     reservada = models.BooleanField(default=False)
-    nota_fiscal = models.ForeignKey('financeiro.NotaFiscal',
-                                    blank=True,
-                                    null=True)
-    venda = models.ForeignKey('financeiro.Venda',
-                              blank=True,
-                              null=True)
+    recibo = models.ForeignKey('financeiro.Recibo',
+                               blank=True,
+                               null=True)
     custo_unitario = models.DecimalField("custo",
                                          max_digits=5,
                                          decimal_places=2,
@@ -108,9 +105,6 @@ class Peca(models.Model):
                                                      decimal_places=2,
                                                      default=Decimal('0.00'),
                                                      validators=[MinValueValidator(Decimal('0.00'))])
-    valor_venda = models.DecimalField("valor venda", max_digits=5,
-                                      decimal_places=2,
-                                      blank=True, null=True)
     pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
 
     def __str__(self):
