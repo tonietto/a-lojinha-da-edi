@@ -207,8 +207,7 @@ class Recibo(models.Model):
 
 
 class Venda(models.Model):
-    cliente = models.CharField(max_length=250, default="",
-                               blank=True)
+    cliente = models.ForeignKey('cliente.Cliente', blank=True)
     data = models.DateField(default=agora)
     FORMA_DE_PAGAMENTO_CHOICES = (
         ('DIN', 'dinheiro'),

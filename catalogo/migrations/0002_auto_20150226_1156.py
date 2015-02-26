@@ -21,13 +21,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='peca',
             name='recibo',
-            field=models.ForeignKey(null=True, blank=True, to='financeiro.Recibo'),
+            field=models.ForeignKey(blank=True, null=True, to='financeiro.Recibo'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='peca',
             name='tags',
-            field=models.ManyToManyField(related_name='nome', to='catalogo.TagsDaPeca'),
+            field=models.ManyToManyField(to='catalogo.TagsDaPeca', related_name='nome'),
             preserve_default=True,
         ),
         migrations.AddField(
