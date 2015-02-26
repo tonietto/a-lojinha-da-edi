@@ -75,13 +75,13 @@ class Peca(models.Model):
     )
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES,
                               default='F')
-    imagem_1 = models.ImageField(upload_to='imagem_do_produto',
+    imagem_1 = models.ImageField(upload_to='imagem_de_produto',
                                  blank=False)
-    imagem_2 = models.ImageField(upload_to='imagem_do_produto',
+    imagem_2 = models.ImageField(upload_to='imagem_de_produto',
                                  blank=True)
-    imagem_3 = models.ImageField(upload_to='imagem_do_produto',
+    imagem_3 = models.ImageField(upload_to='imagem_de_produto',
                                  blank=True)
-    imagem_4 = models.ImageField(upload_to='foto_do_produto',
+    imagem_4 = models.ImageField(upload_to='imagem_de_produto',
                                  blank=True)
     ativa = models.BooleanField("ativa no site", default=True)
     quantidade_comprada = models.PositiveSmallIntegerField(default=1)
