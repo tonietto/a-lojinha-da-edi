@@ -10,7 +10,20 @@
         </div>
         <div class="panel-body">
             <form action="add_peca.html" method="post">{% csrf_token %}
-                {{ form.as_p }}
+                <div class="row">
+                    {% for field in form %}
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="form-group">
+                                {{ field.label_tag }} {{ field }}
+                                <p class="text-mute">
+                                    <small>{{ field.help_text }}</small>
+                                </p>
+                                {{ field.errors }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
                 <button class="btn btn-primary" type="submit">Submit</button>
             </form>
         </div>

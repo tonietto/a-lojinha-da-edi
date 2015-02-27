@@ -76,6 +76,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     <script>
+        //Django
+        $(".errorlist").each(function(){
+            $(this).addClass("text-danger")
+        })
+
         // RESPONSIVE FEATURES //
         function responsiveFeatures(){
             ($(window).width() <= 720) ? $(".btn-block-xs").addClass("btn-block") : $(".btn-block-xs").removeClass("btn-block"); // Button Block XS

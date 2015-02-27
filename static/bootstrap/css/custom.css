@@ -309,3 +309,11 @@ div.dataTables_filter { float: right; }
     top     : 50px;
     z-index : 1000;
 }
+
+
+/*==========  Django  ==========*/
+
+.errorlist {
+    font-size   : 0.8em;
+    padding-left: 1em;
+}
