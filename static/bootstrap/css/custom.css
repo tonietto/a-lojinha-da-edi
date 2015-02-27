@@ -1,0 +1,311 @@
+/*=====================================================
+=            FutureMaster Custom Bootstrap            =
+=====================================================*/
+
+
+
+
+/*==========  GERAL  ==========*/
+
+body {
+    margin-top: 50px;
+}
+
+section { margin-bottom: 20px;}
+
+
+/*==========  TIPOGRAFIA  ==========*/
+
+.text-primary { color: #428BCA; }
+.text-success { color: #5CB85C; }
+.text-info { color: #5BC0DE; }
+.text-warning { color: #F0AD4E; }
+.text-danger { color: #D9534F; }
+.text-white { color: #fff; }
+
+.text-2x { font-size: 2em; }
+.text-3x { font-size: 3em; }
+.text-4x { font-size: 4em; }
+.text-5x { font-size: 5em; }
+.text-6x { font-size: 6em; }
+.text-7x { font-size: 7em; }
+.text-8x { font-size: 8em; }
+.text-9x { font-size: 9em; }
+.text-10x { font-size: 10em; }
+
+.huge {
+    font-size  : 2.4em;
+    font-weight: bold;
+}
+
+.all-caps {
+    text-transform: uppercase;
+}
+
+.list-inline-pipe li{
+    float: left;
+    list-style: none;
+}
+
+.list-inline-pipe li:before { content: " | "; }
+.list-inline-pipe li:first-child:before { content: " "; }
+
+.lang-en, .lang-es, .lang-pt { display: none; }
+
+
+/*==========  Alerts  ==========*/
+
+.alert-dismissable .close, .alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: #000;
+}
+
+
+/*==========  ÍCONES  ==========*/
+
+i.icon-1_5x { font-size: 1.5em; }
+i.icon-2x { font-size: 2em; }
+i.icon-3x { font-size: 3em; }
+i.icon-4x { font-size: 4em; }
+i.icon-5x { font-size: 5em; }
+i.icon-6x { font-size: 6em; }
+i.icon-7x { font-size: 7em; }
+i.icon-8x { font-size: 8em; }
+i.icon-9x { font-size: 9em; }
+i.icon-10x { font-size: 10em; }
+
+i.icon-circle {
+    padding: 5px;
+    border-radius: 100px;
+    border: 2px solid;
+}
+
+
+/*==========  BOTÕES  ==========*/
+
+.btn-margin { margin: 20px; }
+.btn-margin-sm { margin: 2px 0; }
+.btn-default, .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger { border-radius: 4px; }
+.btn-default, .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger, .alert-success, .alert-info, .alert-warning, .alert-danger {
+    background-image : none;
+    background-image : none;
+    background-image : none;
+    background-repeat: no-repeat;
+    filter           : none;
+    filter           : none;
+}
+
+.input-group-btn  >  .btn { font-size: 14px; }
+.btn-warning { color: #000; }
+
+
+/*==========  IMAGENS  ==========*/
+
+.img-center { margin: 0 auto; }
+
+
+/*==========  MODAL  ==========*/
+
+.modal-dialog.modal-fluid { width: 98%; }
+
+
+/*==========  NAVBAR  ==========*/
+
+@media (max-width: 995px) {
+    .navbar-wide .navbar-header { float: none; }
+    .navbar-wide  .navbar-left, .navbar-wide .navbar-right { float: none !important; }
+    .navbar-wide .navbar-toggle { display: block; }
+    .navbar-wide .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-wide .navbar-fixed-top {
+        border-width: 0 0 1px;
+        top         : 0;
+    }
+    .navbar-wide .navbar-collapse.collapse { display: none!important; }
+    .navbar-wide .navbar-nav {
+        float     : none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-wide .navbar-nav > li { float: none; }
+    .navbar-wide .navbar-nav > li > a {
+        padding-top   : 10px;
+        padding-bottom: 10px;
+    }
+    .navbar-wide .collapse.in{ display: block !important; }
+}
+
+@media (max-width: 1200px) {
+    .navbar-wide .navbar-collapse { font-size: 12px; }
+}
+
+.navbar { background-color: #000; }
+
+.caret {
+    -ms-transform     : rotate(-90deg);
+    -webkit-transform : rotate(-90deg);
+    transform         : rotate(-90deg);
+    -webkit-transition: transform 0.25s ease-out;
+    transition        : transform 0.25s ease-out;
+}
+a[aria-expanded="true"] .caret{
+    -ms-transform     : rotate(0deg);
+    -webkit-transform : rotate(0deg);
+    transform         : rotate(0deg);
+    -webkit-transition: transform 0.15s ease-in;
+    transition        : transform 0.15s ease-in;
+}
+
+.navbar-brand, .navbar-nav  >  li  >  a  { text-shadow: none; }
+.nav-tabs > li > a:hover, .nav-pills > li > a:hover { color: #fff; }
+
+
+.alert { box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.3); }
+
+.nav-tabs  >  li  >  a:hover, .nav-pills  >  li  >  a:hover {
+    color           : #1F79DF;
+    background-color: #eee;
+}
+
+
+/*==========  TABELAS  ==========*/
+
+div.dataTables_filter { float: right; }
+
+
+/*==========  FORMULÁRIOS  ==========*/
+
+.has-error .form-control {
+    border-color: #d75452;
+    box-shadow  : 0px 1px 1px rgba(215, 84, 82, 0.075) inset;
+}
+
+.has-warning .control-label { color: #EBBA11; }
+
+.has-warning .form-control:focus {
+    border-color: #EBBA11;
+    box-shadow  : 0px 1px 1px rgba(235, 186, 17, 0.1) inset, 0px 0px 6px #EBBA11;
+}
+
+.has-warning .form-control { border-color: #EBBA11; }
+
+.has-error .form-control:focus {
+    border-color: #d75452;
+    box-shadow  : 0px 1px 1px rgba(215, 84, 82, 0.1) inset, 0px 0px 6px #d75452;
+}
+
+.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label { color: #d75452; }
+
+.has-error .input-group-addon { border-color: #D75452; }
+
+/* Masked Inputs */
+
+.input-masked, .input-masked:after, .input-masked:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing   : border-box;
+    box-sizing        : border-box;
+}
+
+.input-masked {
+    width        : 100%;
+    margin-bottom: 4px;
+    position     : relative;
+}
+
+.input-masked input {
+    cursor            : pointer;
+    opacity           : 0;
+    position          : absolute;
+    width             : 100%;
+    z-index           : 200;
+    transition        : all 0.2s ease;
+    -o-transition     : all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+}
+
+.input-masked label {
+    background        : #fff;
+    border            : 2px solid transparent;
+    border-radius     : 4px;
+    display           : block;
+    margin            : 0;
+    position          : relative;
+    text-align        : center;
+    top               : 4%;
+    width             : 100%;
+    transition        : all 0.2s ease;
+    -o-transition     : all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+}
+
+.input-masked-circle label {
+    border-radius: 100px;
+    line-height: 1.5em;
+}
+
+.input-masked-circle label i { padding: 0; }
+
+.input-masked label img {
+    width             : 70px;
+    padding           : 10px;
+    text-align        : center;
+    margin            : 0 auto;
+    -webkit-transition: all 0.2s ease;
+    -o-transition     : all 0.2s ease;
+    transition        : all 0.2s ease;
+}
+
+.input-masked:hover input:not(:checked) ~ label, .input-masked:hover input:checked ~ label {
+    border            : 2px solid #ccc;
+    cursor            : pointer;
+    transition        : all 0.2s ease;
+    -o-transition     : all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+}
+
+.input-masked:active input:not(:checked) ~ label, .input-masked:active input:checked ~ label, .input-masked input:checked ~ label {
+    border            : 2px solid #333;
+    cursor            : pointer;
+    transition        : all 0.2s ease;
+    -o-transition     : all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+}
+
+.input-masked:active input:checked ~ label:after, .input-masked:active input:checked ~ label:after, .input-masked input:checked ~ label:after {
+    color      : #000;
+    content    : "\e622";
+    font-family: 'FutureGlyphs';
+    font-size  : 2.4em;
+    left       : 25%;
+    opacity    : 0.6;
+    position   : absolute;
+    text-shadow: 0 1px 0 #fff;
+    top        : 25%;
+}
+
+.input-masked input:checked ~ label{
+    -webkit-transition: all 0.1s ease-out;
+    -o-transition     : all 0.1s ease-out;
+    transition        : all 0.1s ease-out;
+}
+
+
+/*==========  OUTROS  ==========*/
+
+#floater-menu { position: absolute; }
+#floater { float: left; }
+
+.floater-fixed{
+    position: fixed;
+    top     : 0;
+    z-index : 1000;
+}
+
+.floater-navbar-fixed {
+    position: fixed;
+    top     : 50px;
+    z-index : 1000;
+}

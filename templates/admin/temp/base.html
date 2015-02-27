@@ -34,25 +34,31 @@
                 </div>
             </div>{# ./navbar-header #}
             <div class="collapse navbar-collapse navbar-right" id="main-navbar">
-                {% block usertools %}
-                <ul id="user-tools" class="nav navbar-nav">
-                    {% block welcome-msg %}
-                        <p class="navbar-text">Olá, {% firstof user.get_short_name user.get_username %}</p>
-                    {% endblock %}
-                    {% block userlinks %}
-                        {% if user.is_active and user.is_staff %}
-                            {% url 'django-admindocs-docroot' as docsroot %}
-                            {% if docsroot %}
-                                <li><a href="{{ docsroot }}">{% trans "Documentation" %}</a></li>
+
+                {% if has_permission %}
+                <div id="user-tools">
+                    {% block usertools %}
+                    <ul class="nav navbar-nav">
+                        {% block welcome-msg %}
+                            <p class="navbar-text">Olá, {% firstof user.get_short_name user.get_username %}</p>
+                        {% endblock %}
+                        {% block userlinks %}
+                            {% if user.is_active and user.is_staff %}
+                                {% url 'django-admindocs-docroot' as docsroot %}
+                                {% if docsroot %}
+                                    <li><a href="{{ docsroot }}">{% trans "Documentation" %}</a></li>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                        {% if user.has_usable_password %}
-                        <li><a href="{% url 'admin:password_change' %}">{% trans "Change password" %}</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'admin:logout' %}">{% trans "Log out" %}</a></li>
-                    {% endblock userlinks %}
-                </ul>
-                {% endblock usertools %}
+                            {% if user.has_usable_password %}
+                            <li><a href="{% url 'admin:password_change' %}">{% trans "Change password" %}</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'admin:logout' %}">{% trans "Log out" %}</a></li>
+                        {% endblock userlinks %}
+                    </ul>
+                    {% endblock usertools %}
+                </div>
+                {% endif %}
+
                 {% block nav-global %}{% endblock %}
 
             </div>
