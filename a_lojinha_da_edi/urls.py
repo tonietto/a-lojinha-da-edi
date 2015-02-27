@@ -6,5 +6,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'a_lojinha_da_edi.views.home', name='home'),
 
     url(r'^superadmin/', include(admin.site.urls)),
-    url(r'^admin', 'a_lojinha_da_edi.views.admin', name='admin'),
+    url(r'^admin/add_peca', 'a_lojinha_da_edi.views.admin_add_peca', name='add_peca'),
 )

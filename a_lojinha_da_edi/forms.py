@@ -1,13 +1,9 @@
 from django import forms
-from django.core.exceptions import NON_FIELD_ERRORS
-from catalogo.models import Peca
+from catalogo.models import CategoriaDaPeca
 
 
-class PecaForm(forms.ModelForm):
-    class Meta:
-        model = Peca
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                'unique_together': "%(field_labels)s devem ser únicos.",
-            }
-        }
+class PecaBasicForm(forms.Form):
+    CATEGORIA_CHOICES = CategoriaDaPeca.objects.values_list('id', 'categoria')
+
+    nome = forms.CharField(max_length=30)
+    categoria = forms.MultipleChoiceField(choices=CATEGORIA_CHOICES)
