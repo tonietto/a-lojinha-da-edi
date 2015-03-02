@@ -9,32 +9,26 @@ import datetime
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('financeiro', '0001_initial'),
+        ('financeiro', '0002_auto_20150302_1112'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='parcela',
             name='data',
-            field=models.DateField(default=datetime.datetime(2015, 2, 26, 16, 8, 11, 195456, tzinfo=utc)),
-            preserve_default=True,
-        ),
-        migrations.AlterField(
-            model_name='recibo',
-            name='data',
-            field=models.DateField(default=datetime.datetime(2015, 2, 26, 16, 8, 11, 195456, tzinfo=utc)),
+            field=models.DateField(default=datetime.datetime(2015, 3, 2, 16, 57, 13, 594721, tzinfo=utc)),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='venda',
             name='data',
-            field=models.DateField(default=datetime.datetime(2015, 2, 26, 16, 8, 11, 195456, tzinfo=utc)),
+            field=models.DateField(default=datetime.datetime(2015, 3, 2, 16, 57, 13, 594721, tzinfo=utc)),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='viagem',
             name='data',
-            field=models.DateField(default=datetime.datetime(2015, 2, 26, 16, 8, 11, 195456, tzinfo=utc)),
+            field=models.DateField(default=datetime.datetime(2015, 3, 2, 16, 57, 13, 594721, tzinfo=utc)),
             preserve_default=True,
         ),
     ]

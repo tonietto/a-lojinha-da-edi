@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogo', '0001_initial'),
         ('financeiro', '0001_initial'),
+        ('catalogo', '0001_initial'),
     ]
 
     operations = [
@@ -21,19 +21,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='peca',
             name='recibo',
-            field=models.ForeignKey(blank=True, null=True, to='financeiro.Recibo'),
+            field=models.ForeignKey(blank=True, to='financeiro.Recibo', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='peca',
             name='tags',
-            field=models.ManyToManyField(to='catalogo.TagsDaPeca', related_name='nome'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='peca',
-            name='tamanho',
-            field=models.ForeignKey(to='catalogo.TamanhoDaPeca'),
+            field=models.ManyToManyField(blank=True, related_name='nome', to='catalogo.TagsDaPeca'),
             preserve_default=True,
         ),
     ]

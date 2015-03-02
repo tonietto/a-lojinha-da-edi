@@ -142,7 +142,7 @@ i.icon-circle {
     .navbar-wide .navbar-collapse { font-size: 12px; }
 }
 
-.navbar { background-color: #000; }
+.navbar { background-color: #fff; }
 
 .caret {
     -ms-transform     : rotate(-90deg);

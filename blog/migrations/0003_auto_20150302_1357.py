@@ -9,20 +9,20 @@ import datetime
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0001_initial'),
+        ('blog', '0002_auto_20150302_1112'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='post',
             name='edicao',
-            field=models.DateTimeField(verbose_name='editado em', default=datetime.datetime(2015, 2, 26, 16, 7, 54, 579496, tzinfo=utc)),
+            field=models.DateTimeField(default=datetime.datetime(2015, 3, 2, 16, 57, 13, 579032, tzinfo=utc), verbose_name='editado em'),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='post',
             name='pub_date',
-            field=models.DateTimeField(verbose_name='data de publicação', default=datetime.datetime(2015, 2, 26, 16, 7, 54, 579496, tzinfo=utc)),
+            field=models.DateTimeField(default=datetime.datetime(2015, 3, 2, 16, 57, 13, 579032, tzinfo=utc), verbose_name='data de publicação'),
             preserve_default=True,
         ),
     ]

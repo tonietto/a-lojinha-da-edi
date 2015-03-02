@@ -1,0 +1,34 @@
+{% extends "admin_base.html" %}
+
+{% block title %} Nova Peça {% endblock %}
+
+{% block extrastyle %}
+    #id_slug {
+        border: none;
+        color:  #ccc;
+    }
+    label[for=id_slug] { color: #ccc; }
+    input[type=text] { width: 80%; }
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-header">Sobre o FutureMaster</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Peças
+        </div>
+        <div class="panel-body">
+            <a href="{% url 'nova_peca' %}" class="btn btn-default" >Nova Peça</a>
+        </div>
+    </div>{# /.panel #}
+{% endblock content %}
+
+{% block extrascript %}
+    $('#id_genero').parent().parent().append('<hr />');
+    $('#id_mostrar_no_site').parent().append('<hr />');
+    $('#id_custo_unitario').parent().append('<hr />');
+    $('#id_nome').keyup(function(){
+        var text = $(this).val();
+        $('#id_slug').val(convertToSlug(text));
+    })
+{% endblock extrascript %}

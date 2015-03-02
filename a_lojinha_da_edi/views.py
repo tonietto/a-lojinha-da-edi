@@ -1,20 +1,26 @@
+from django.forms.models import inlineformset_factory
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from .forms import PecaForm
 
+from catalogo.models import Peca, QuantidadeDePecasPorTamanho
 
-def admin_add_peca(request):
-    if request.method == 'GET':
-        form = PecaForm()
 
+def admin_estoque_nova_peca(request):
+    QuantidadeFormSet = inlineformset_factory(Peca, QuantidadeDePecasPorTamanho)
+    if request.method == 'POST':
+        form_principal = PecaForm(request.POST, request.FILES)
+        quantidade_formset = QuantidadeFormSet(request.POST, instance='Peca')
+
+        if form_principal.is_valid() and quantidade_formset().is_valid():
+            form_principal.save(commit=True)
+            quantidade_formset.save(commit=True)
+            return HttpResponseRedirect('/superadmin/')
     else:
-        # A POST request: Handle Form Upload
-        # Bind data from request.POST into a PostForm
-        form = PecaForm(request.POST)
+        form_principal = PecaForm(prefix='peça')
+        quantidade_formset = QuantidadeFormSet()
 
-        # If data is valid, proceeds to create a new post and redirect the user
-        if form.is_valid():
-            return HttpResponseRedirect(reverse('admin_add_peca'))
-
-    return render(request, 'admin_add_peca.html', {'form': form, })
+    return render_to_response('admin_nova_peca.html', {
+        'form_principal': form_principal,
+        'quantidade_formset': quantidade_formset,
+    })

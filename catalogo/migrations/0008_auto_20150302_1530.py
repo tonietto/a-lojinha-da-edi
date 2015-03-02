@@ -7,14 +7,16 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogo', '0002_auto_20150226_1156'),
+        ('catalogo', '0007_auto_20150302_1527'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.RemoveField(
             model_name='peca',
-            name='codigo',
-            field=models.PositiveSmallIntegerField(verbose_name='código', null=True),
-            preserve_default=True,
+            name='slug',
+        ),
+        migrations.RemoveField(
+            model_name='tagsdapeca',
+            name='slug',
         ),
     ]

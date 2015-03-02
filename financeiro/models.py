@@ -128,7 +128,7 @@ class Marca(models.Model):
     nome = models.CharField(max_length=30)
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
-    imagem = models.ImageField(upload_to='imagem_da_marca', blank=True)
+    imagem = models.ImageField(upload_to='uploads/imagens/marcas', blank=True)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
     def __str__(self):
@@ -193,17 +193,17 @@ class Recibo(models.Model):
         ('1', 'Romaneio'),
         ('2', 'Nota Fiscal'),
     )
-    tipo = models.PositiveSmallIntegerField(choices=RECIBO_CHOICES, default=1)
+    tipo = models.CharField(max_length=1, choices=RECIBO_CHOICES, default=1)
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
-    data = models.DateField(default=agora)
     viagem = models.ForeignKey(Viagem)
     pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
 
     def __str__(self):
-        return self.nome
+        nome = str(self.loja) + ' ' + ' (' + (self.pub_date).strftime('%d/%m/%Y, %H:%M') + ')'
+        return nome
 
     class Meta:
-        ordering = ('data', 'pub_date')
+        ordering = ('pub_date',)
 
 
 class Venda(models.Model):

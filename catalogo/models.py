@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 
 
 class CategoriaDaPeca(models.Model):
-    categoria = models.CharField(max_length=30, unique=True, default="Nenhuma")
+    categoria = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return self.categoria
@@ -15,7 +15,7 @@ class CategoriaDaPeca(models.Model):
 
 
 class CorDaPeca(models.Model):
-    cor = models.CharField(max_length=30, unique=True, default="Branca")
+    cor = models.CharField(max_length=30, unique=True)
     codigo = models.CharField("código",
                               max_length=7,
                               blank=True,
@@ -31,7 +31,7 @@ class CorDaPeca(models.Model):
 
 
 class TamanhoDaPeca(models.Model):
-    tamanho = models.CharField(max_length=3, unique=True, default="M")
+    tamanho = models.CharField(max_length=3, unique=True)
 
     def __str__(self):
         return self.tamanho
@@ -43,7 +43,6 @@ class TamanhoDaPeca(models.Model):
 
 class TagsDaPeca(models.Model):
     tag = models.CharField(max_length=30, unique=True)
-    slug = models.SlugField(help_text='URL da tag. Ex.: manga-longa')
     pub_date = models.DateTimeField("data de criação", auto_now_add=True)
 
     def __str__(self):
@@ -56,37 +55,29 @@ class TagsDaPeca(models.Model):
 
 
 class Peca(models.Model):
-    nome = models.CharField(max_length=30, default="")
+    nome = models.CharField(max_length=60, default="")
     categoria = models.ForeignKey(CategoriaDaPeca)
     """
     ex.: Blusa, Calça, Vestido
     """
-    slug = models.SlugField(help_text='URL. Ex.: blusinha-guardachuvas')
-    tags = models.ManyToManyField(TagsDaPeca, related_name='nome')
+    tags = models.ManyToManyField(TagsDaPeca, related_name='nome', blank=True)
     marca = models.ForeignKey('financeiro.Marca')
     cores = models.ManyToManyField(CorDaPeca, blank=True, null=True)
-    tamanho = models.ForeignKey(TamanhoDaPeca)
-    """
-    ex.: PPP, P, 36
-    """
     GENERO_CHOICES = (
         ('F', 'Feminino'),
         ('M', 'Masculino'),
     )
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES,
                               default='F')
-    imagem_1 = models.ImageField(upload_to='imagem_de_produto',
-                                 blank=False)
-    imagem_2 = models.ImageField(upload_to='imagem_de_produto',
+    imagem_1 = models.ImageField(upload_to='uploads/imagens/pecas/',
                                  blank=True)
-    imagem_3 = models.ImageField(upload_to='imagem_de_produto',
+    imagem_2 = models.ImageField(upload_to='uploads/imagens/pecas/',
                                  blank=True)
-    imagem_4 = models.ImageField(upload_to='imagem_de_produto',
+    imagem_3 = models.ImageField(upload_to='uploads/imagens/pecas/',
                                  blank=True)
-    ativa = models.BooleanField("ativa no site", default=True)
-    quantidade_comprada = models.PositiveSmallIntegerField(default=1)
-    quantidade_em_estoque = models.PositiveSmallIntegerField(default=1)
-    reservada = models.BooleanField(default=False)
+    imagem_4 = models.ImageField(upload_to='uploads/imagens/pecas/',
+                                 blank=True)
+    mostrar_no_site = models.BooleanField(default=True)
     recibo = models.ForeignKey('financeiro.Recibo',
                                blank=True,
                                null=True)
@@ -104,21 +95,23 @@ class Peca(models.Model):
                                                      max_digits=5,
                                                      decimal_places=2,
                                                      default=Decimal('0.00'),
-                                                     validators=[MinValueValidator(Decimal('0.00'))])
+                                                     validators=[MinValueValidator(Decimal('0.00'))],
+                                                     blank=True, null=True)
     pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
-    codigo = models.PositiveSmallIntegerField("código", db_column='codigo_automatico', null=True)
 
     def __str__(self):
         return self.nome
 
-    @property
-    def codigo_automatico(self):
-        return self._codigo_automatico
-
-    @codigo_automatico.setter
-    def codigo_automatico(self, value):
-        self._codigo_automatico = self.id
-
     class Meta:
         ordering = ('pub_date', 'nome')
         verbose_name = 'peça'
+
+
+class QuantidadeDePecasPorTamanho(models.Model):
+    peca = models.ForeignKey(Peca)
+    tamanho = models.ForeignKey(TamanhoDaPeca)
+    """
+    ex.: PPP, P, 36
+    """
+    quantidade_comprada = models.PositiveSmallIntegerField(default=1)
+    quantidade_em_estoque = models.PositiveSmallIntegerField(default=1)

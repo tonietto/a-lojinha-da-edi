@@ -9,16 +9,14 @@
 
 html, body { height: 100%; }
 
+body { background: #EAEAEA; }
+
 .canvas {
-    margin-left: 300px;
+    margin-left: 200px;
     margin-top: -50px !important;
 	padding-top: 50px;
 }
 .container { max-width: 100%; }
-
-@media screen and (min-width: 1200px) {
-	.canvas { margin-left: 300px; }
-}
 
 /*==========  Alerts  ==========*/
 
@@ -26,31 +24,6 @@ html, body { height: 100%; }
 
 @media screen and (min-width: 1500px){
 	.canvas .alert-fixed-top, .canvas .alert-fixed-bottom { margin-left: -350px; }
-}
-
-
-/*==========  SWITCH-LIGHT  ==========*/
-
-.switch-light.switch-ios.switch-nomargin span::before{
-	left       : 0;
-	margin-left: 1.25em;
-}
-.switch-ios.switch-light.switch-nomargin input ~ a {
-	left: 0%;
-	margin-left: 0;
-}
-.switch-ios.switch-light.switch-nomargin input:checked ~ a {
-	left       : 50%;
-	margin-left: 4em;
-}
-
-.switch-only{
-	left    : -90px;
-	position: relative;
-}
-
-@media screen and (max-width: 1800px) {
-	.switch-only label a { display: none; }
 }
 
 
@@ -69,6 +42,8 @@ html, body { height: 100%; }
 .navmenu {
 	font-weight: 300;
 	overflow-x : hidden;
+	width: 200px;
+	z-index: 1029;
 }
 
 .navmenu-default .navmenu-nav > .active > a, .navbar-default .navbar-offcanvas .navmenu-nav > .active > a, .navmenu-default .navmenu-nav > .active > a:hover, .navbar-default .navbar-offcanvas .navmenu-nav > .active > a:hover, .navmenu-default .navmenu-nav > .active > a:focus, .navbar-default .navbar-offcanvas .navmenu-nav > .active > a:focus {
@@ -137,37 +112,14 @@ html, body { height: 100%; }
 
 .jasny-navbar .navbar-toggle { display: block !important; }
 
-@media (max-width: 720px) {
+@media screen and (max-width: 920px) {
 	.navmenu {
-		margin-top: 50px;
-		width     : 84%;
+		display: none;
+		width: 0;
 	}
-	.navmenu > .nav > li.active > a:after { background: transparent; }
-	.navmenu-fixed-left, .navbar-offcanvas.navmenu-fixed-left  { border-width: 2px 0 0 0; }
-}
-
-@media screen and (min-width: 1200px) {
-	.navbar { z-index: 1031; }
-	.navmenu-nav.dropdown-menu a { width: 80px; }
-	.navmenu-nav.dropdown-menu .navmenu-icon { padding: 15px 0; }
-	.navmenu-nav.dropdown-menu .divider { display: none; }
-	.navmenu .dropdown-menu > li > a { padding: 3px 24px; }
-	.jasny-navbar .navbar-toggle { display: none !important; }
-	.navmenu .caret { opacity: 0; }
-	.canvas { margin-left: 80px; }
-	.navmenu { width: 80px; }
-	.navmenu a { font-size: 0; }
-	.navmenu a i { font-size: 28px; }
-}
-
-@media screen and (min-width: 1500px) {
-	.navmenu-nav.dropdown-menu a { width: auto; }
-	.navmenu .caret { opacity: 1; }
-	.navmenu-nav.dropdown-menu .divider { display: block; }
-	.canvas { margin-left: 300px; }
-	.navmenu .dropdown-menu > li > a { padding: 3px 66px; }
-	.navmenu { width: 300px; }
-	.navmenu a { font-size: 14px; }
+	.canvas {
+		margin-left: 0;
+	}
 }
 
 /*==========  BOTÕES  ==========*/
