@@ -18,8 +18,8 @@
             Peças
         </div>
         <div class="panel-body">
-            <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% for field in form_principal %}
+            <form action="." method="post">{% csrf_token %}
+                {% for field in form %}
                         <div class="col-xs-12">
                             <div class="form-group">
                                 {{ field.label_tag }} {{ field }} {{ field.errors }}
@@ -29,32 +29,37 @@
                             </div>
                         </div>
                 {% endfor %}
-                {% for field in quantidade_formset %}
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                {{ field.label_tag }} {{ field }} {{ field.errors }}
-                                <p class="text-mute">
-                                    <small>{{ field.help_text }}</small>
-                                </p>
+                <div class="col-xs-12">
+                    <br /><br />
+                    <fieldset>
+                        <legend>Quantidade de peças por tamanho</legend>
+                        {{ quantidade_form.management_form }}
+                        {{ quantidade_form.non_form_errors }}
+                        {% for form in quantidade_form %}
+                            {{ form.id }}
+                            <div class="inline {{ quantidade_form.prefix }}">
+                                {{ form.tamanho.label_tag }}
+                                {{ form.tamanho }}
+                                {{ form.tamanho.errors }}
+                                {{ form.quantidade_comprada.label_tag }}
+                                {{ form.quantidade_comprada }}
+                                {{ form.quantidade_comprada.errors }}
+                                {{ form.quantidade_em_estoque.label_tag }}
+                                {{ form.quantidade_em_estoque }}
+                                {{ form.quantidade_em_estoque.errors }}
                             </div>
-                        </div>
-                {% endfor %}
+                        {% endfor %}
+                    </fieldset>
+                </div>
                 <p class="text-right">
-                    <button class="btn btn-primary" type="submit">Salvar</button>
+                    <button class="btn btn-primary" type="submit" value="Salvar">Salvar</button>
                 </p>
             </form>
-            {% if messages %}
-                {% for message in messages %}
-                    <div {% if message.tags == "success" %} class="alert alert-dismissable alert-success" {% endif %} role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
         </div>
     </div>{# /.panel #}
 {% endblock content %}
 
-{% block extrascript %}
+{% block extrascriptindocumentready %}
     $('#id_peça-genero').parent().parent().append('<hr />');
     $('#id_peça-mostrar_no_site').parent().append('<hr />');
     $('#id_peça-custo_unitario').parent().append('<hr />');
@@ -63,4 +68,12 @@
         var text = $(this).val();
         $('#id_slug').val(convertToSlug(text));
     })
-{% endblock extrascript %}
+{% endblock extrascriptindocumentready %}
+
+{% block extrascript %}
+    $(function() {
+        $(".inline.{{ quantidade_form.prefix }}").formset({
+            prefix: "{{ quantidade_form.prefix }}",
+        })
+    })
+{% endblock %}

@@ -76,6 +76,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="{{ STATIC_URL }}js/jquery.formset.min.js"></script>
     <script>
         //Django
         $(".errorlist").each(function(){
@@ -117,7 +118,7 @@
                 fieldRevealer();
             });
             // ./FORM ANCHOR //
-            {% block extrascript %}{% endblock %}
+            {% block extrascriptindocumentready %}{% endblock %}
         });
         // ./Document.Ready() //
 
@@ -226,6 +227,7 @@
                 });
             });
         })
+        {% block extrascript %}{% endblock %}
     </script>
   </body>
 </html>

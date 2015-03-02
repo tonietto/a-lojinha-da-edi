@@ -113,5 +113,5 @@ class QuantidadeDePecasPorTamanho(models.Model):
     """
     ex.: PPP, P, 36
     """
-    quantidade_comprada = models.PositiveSmallIntegerField(default=1)
-    quantidade_em_estoque = models.PositiveSmallIntegerField(default=1)
+    quantidade_comprada = models.PositiveSmallIntegerField(default=0)
+    quantidade_em_estoque = models.PositiveSmallIntegerField(default=0)

@@ -1,6 +1,11 @@
 from django.contrib import admin
 from catalogo.models import Peca, CategoriaDaPeca, CorDaPeca
-from catalogo.models import TamanhoDaPeca, TagsDaPeca
+from catalogo.models import TamanhoDaPeca, TagsDaPeca, QuantidadeDePecasPorTamanho
+
+
+class QuantidadeDePecasPorTamanhoInline(admin.TabularInline):
+    model = QuantidadeDePecasPorTamanho
+    extra = 1
 
 
 class PecaAdmin(admin.ModelAdmin):
@@ -22,6 +27,7 @@ class PecaAdmin(admin.ModelAdmin):
                                    ('custo_unitario', 'preco_unitario', 'preco_unitario_promocional',),
                                    ]}),
     ]
+    inlines = [QuantidadeDePecasPorTamanhoInline]
 
 
 admin.site.register(Peca, PecaAdmin)

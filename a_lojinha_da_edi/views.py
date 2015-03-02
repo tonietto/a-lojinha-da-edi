@@ -1,27 +1,45 @@
-from django.forms.models import inlineformset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from .forms import PecaForm
+from django.views.generic import CreateView
 
-from catalogo.models import Peca, QuantidadeDePecasPorTamanho
+from .forms import PecaForm, QuantidadeFormSet
+from catalogo.models import Peca
 
 
-def admin_estoque_nova_peca(request, peca_id):
-    peca = Peca.objects.get(pk=peca_id)
-    QuantidadeFormSet = inlineformset_factory(Peca, QuantidadeDePecasPorTamanho)
-    if request.method == 'POST':
-        form_principal = PecaForm(request.POST, request.FILES)
-        quantidade_formset = QuantidadeFormSet(request.POST, instance=peca)
+class nova_peca(CreateView):
+    model = Peca
+    template_name = "admin_nova_peca.html"
+    form_class = PecaForm
+    success_url = "estoque/nova/peca/"
 
-        if form_principal.is_valid() and quantidade_formset().is_valid():
-            form_principal.save(commit=True)
-            quantidade_formset.save(commit=True)
-            return HttpResponseRedirect('/superadmin/')
-    else:
-        form_principal = PecaForm(prefix='peça')
-        quantidade_formset = QuantidadeFormSet()
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        quantidade_form = QuantidadeFormSet()
 
-    return render(request, 'admin_nova_peca.html', {
-        'form_principal': form_principal,
-        'quantidade_formset': quantidade_formset,
-    })
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  quantidade_form=quantidade_form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        quantidade_form = QuantidadeFormSet(self.request.POST)
+
+        if form.is_valid() and quantidade_form.is_valid():
+            return self.form_valid(form, quantidade_form)
+
+        else:
+            return self.form_invalid(form, quantidade_form)
+
+    def form_valid(self, form, quantidade_form):
+        self.object = form.save()
+        quantidade_form.isntance = self.object
+        quantidade_form.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, quantidade_form):
+        return self.render_to_response(self.get_context_data(form=form,
+                                       quantidade_form=quantidade_form))
