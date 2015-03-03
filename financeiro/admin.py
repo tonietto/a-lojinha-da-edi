@@ -5,21 +5,37 @@ from financeiro.models import Recibo, Venda, Peca, Parcela
 
 class ViagemAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,      {'fields': [
-                               'nome',
-                               'data',
-                               'cidade',
-                               ]}),
-        ('Custos',  {'fields': [
-                               'custo_combustivel',
-                               'custo_pedagios',
-                               'custo_alimentacao',
-                               'custo_estacionamento',
-                               'custo_transporte',
-                               'custo_hospedagem',
-                               'custo_outros'
-                               ]}),
+        ('Geral', {
+            "classes": ("grp-collapse grp-open",),
+            'fields': [
+                       'data',
+                       'cidade',
+                       ]}),
+        ('Custos', {
+            "classes": ("grp-collapse grp-open",),
+            'fields': [
+                       'custo_combustivel',
+                       'custo_pedagios',
+                       'custo_alimentacao',
+                       'custo_estacionamento',
+                       'custo_transporte',
+                       'custo_hospedagem',
+                       'custo_outros'
+                       ]}),
     ]
+    list_display = (
+                    'cidade',
+                    'data',
+                    'combustivel',
+                    'pedagios',
+                    'alimentacao',
+                    'estacionamento',
+                    'transporte',
+                    'hospedagem',
+                    'outros',
+                    'custo_total'
+                    )
+    search_fields = [ 'cidade' ]
 
 
 class PecaInline(admin.TabularInline):
@@ -35,14 +51,16 @@ class ParcelaInline(admin.TabularInline):
 
 class VendaAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,       {'fields': [
-                                'cliente',
-                                'data',
-                                'forma_de_pagamento',
-                                'forma_caderninho',
-                                'forma_cartao',
-                                'numero_de_parcelas',
-                                ]}),
+        (None, {
+            "classes": ("grp-collapse grp-open",),
+            'fields': [
+                       'cliente',
+                       'data',
+                       'forma_de_pagamento',
+                       'forma_caderninho',
+                       'forma_cartao',
+                       'numero_de_parcelas',
+                       ]}),
     ]
     inlines = [PecaInline, ParcelaInline]
 

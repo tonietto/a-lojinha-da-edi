@@ -1,6 +1,7 @@
 from django.db import models
 from decimal import Decimal
 from django.core.validators import MinValueValidator
+from django.contrib.humanize.templatetags.humanize import naturalday
 from django.utils import timezone
 
 
@@ -143,7 +144,6 @@ class Marca(models.Model):
 
 
 class Viagem(models.Model):
-    nome = models.CharField(max_length=150)
     data = models.DateField(default=agora)
     cidade = models.ForeignKey(Cidade)
     custo_combustivel = models.DecimalField("combustível",
@@ -184,7 +184,41 @@ class Viagem(models.Model):
     pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
 
     def __str__(self):
-        return self.nome
+        nome = str(self.cidade) + ' ' + ' (' + (self.pub_date).strftime('%d/%m/%Y') + ')'
+        return nome
+
+    @property
+    def combustivel(self):
+        return "R$%s" % self.custo_combustivel if self.custo_combustivel else ""
+
+    @property
+    def pedagios(self):
+        return "R$%s" % self.custo_pedagios if self.custo_pedagios else ""
+
+    @property
+    def alimentacao(self):
+        return "R$%s" % self.custo_alimentacao if self.custo_alimentacao else ""
+
+    @property
+    def estacionamento(self):
+        return "R$%s" % self.custo_estacionamento if self.custo_estacionamento else ""
+
+    @property
+    def transporte(self):
+        return "R$%s" % self.custo_transporte if self.custo_transporte else ""
+
+    @property
+    def hospedagem(self):
+        return "R$%s" % self.custo_hospedagem if self.custo_hospedagem else ""
+
+    @property
+    def outros(self):
+        return "R$%s" % self.custo_outros if self.custo_outros else ""
+
+    @property
+    def custo_total(self):
+        calculo = self.custo_combustivel + self.custo_pedagios + self.custo_alimentacao + self.custo_estacionamento + self.custo_transporte + self.custo_hospedagem + self.custo_outros
+        return "R$%s" % calculo if calculo else ""
 
     class Meta:
         ordering = ('data', 'pub_date')
