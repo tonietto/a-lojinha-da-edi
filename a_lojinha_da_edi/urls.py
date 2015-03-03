@@ -5,6 +5,8 @@ urlpatterns = patterns(
                        '',
                        (r'^grappelli/', include('grappelli.urls')),  # grappelli URLS
                        url(r'^admin/', include(admin.site.urls)),  # admin site
+                       url(r'^admin/catalogo', include(admin.site.urls), name='catalogo'),  # admin site
                        )
-
-# url(r'^$', 'a_lojinha_da_edi.views.home', name='home'),
+'''
+url(r'^$', 'a_lojinha_da_edi.views.home', name='home'),
+'''
