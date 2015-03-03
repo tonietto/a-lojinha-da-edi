@@ -134,6 +134,10 @@ class Marca(models.Model):
     def __str__(self):
         return self.nome
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "nome__icontains",)
+
     class Meta:
         ordering = ('nome', 'pub_date')
 

@@ -9,6 +9,10 @@ class CategoriaDaPeca(models.Model):
     def __str__(self):
         return self.categoria
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "categoria__icontains",)
+
     class Meta:
         ordering = ('categoria',)
         verbose_name = 'categoria'
@@ -23,6 +27,10 @@ class CorDaPeca(models.Model):
 
     def __str__(self):
         return self.cor
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "cor__icontains",)
 
     class Meta:
         ordering = ('cor',)
@@ -48,19 +56,18 @@ class TagsDaPeca(models.Model):
     def __str__(self):
         return self.tag
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "tag__icontains",)
+
     class Meta:
         ordering = ('pub_date', 'tag',)
-        verbose_name = 'tag(s)'
-        verbose_name_plural = 'tags'
 
 
 class Peca(models.Model):
     nome = models.CharField(max_length=60, default="")
     categoria = models.ForeignKey(CategoriaDaPeca)
-    """
-    ex.: Blusa, Calça, Vestido
-    """
-    tags = models.ManyToManyField(TagsDaPeca, related_name='nome', blank=True)
+    tags = models.ManyToManyField(TagsDaPeca, blank=True)
     marca = models.ForeignKey('financeiro.Marca')
     cores = models.ManyToManyField(CorDaPeca, blank=True, null=True)
     GENERO_CHOICES = (
@@ -81,17 +88,17 @@ class Peca(models.Model):
     recibo = models.ForeignKey('financeiro.Recibo',
                                blank=True,
                                null=True)
-    custo_unitario = models.DecimalField("custo",
+    custo_unitario = models.DecimalField("custo R$",
                                          max_digits=5,
                                          decimal_places=2,
                                          default=Decimal('0.00'),
                                          validators=[MinValueValidator(Decimal('0.00'))])
-    preco_unitario = models.DecimalField("preço",
+    preco_unitario = models.DecimalField("preço R$",
                                          max_digits=5,
                                          decimal_places=2,
                                          default=Decimal('0.00'),
                                          validators=[MinValueValidator(Decimal('0.00'))])
-    preco_unitario_promocional = models.DecimalField("preço promocional",
+    preco_unitario_promocional = models.DecimalField("preço promocional R$",
                                                      max_digits=5,
                                                      decimal_places=2,
                                                      default=Decimal('0.00'),
