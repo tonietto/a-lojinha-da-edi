@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 
 
 class Cliente(models.Model):
@@ -10,6 +11,7 @@ class Cliente(models.Model):
     cidade = models.ForeignKey('financeiro.Cidade', blank=True)
     rua = models.CharField(max_length=150, blank=True)
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
+    complemento = models.CharField(max_length=30, blank=True, null=True)
     bairro = models.CharField(max_length=30, blank=True)
     anotacoes = models.TextField("anotações", blank=True)
     data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
@@ -17,6 +19,12 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def endereco(self):
+        return format_html(self.rua + ', ' + str(self.numero) + ', ' + self.complemento + '. ' + str(self.cidade) + '.')
+
+    endereco.short_description = 'endereço'
+    endereco.allow_tags = True
 
     class Meta:
         ordering = ('data_de_edicao', 'nome')

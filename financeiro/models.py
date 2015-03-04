@@ -60,6 +60,10 @@ class Cidade(models.Model):
     def __str__(self):
         return self.cidade
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "cidade__icontains",)
+
     class Meta:
         ordering = ('data_de_edicao',)
 

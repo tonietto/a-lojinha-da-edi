@@ -56,7 +56,12 @@ class PecaAdmin(admin.ModelAdmin):
                     'data_de_cadastro',
                     'data_de_edicao'
                     )
-    search_fields = ('categoria',)
+    search_fields = (
+                     'nome',
+                     'genero',
+                     'data_de_cadastro',
+                     'data_de_edicao',
+                     )
 
     class Media:
         js = [
@@ -81,11 +86,29 @@ class CorAdmin(admin.ModelAdmin):
                     'data_de_criacao',
                     'data_de_edicao'
                     )
-    search_fields = ('cor',)
+    search_fields = ('cor', 'codigo')
+
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = (
+                    'tag',
+                    'data_de_criacao',
+                    'data_de_edicao'
+                    )
+    search_fields = ('tag',)
+
+
+class TamanhoAdmin(admin.ModelAdmin):
+    list_display = (
+                    'tamanho',
+                    'data_de_criacao',
+                    'data_de_edicao'
+                    )
+    search_fields = ('tamanho',)
 
 
 admin.site.register(Peca, PecaAdmin)
 admin.site.register(CategoriaDaPeca, CategoriaAdmin)
 admin.site.register(CorDaPeca, CorAdmin)
-admin.site.register(TamanhoDaPeca)
-admin.site.register(TagsDaPeca)
+admin.site.register(TagsDaPeca, TagAdmin)
+admin.site.register(TamanhoDaPeca, TamanhoAdmin)

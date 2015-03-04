@@ -130,13 +130,13 @@ class Peca(models.Model):
     thumbnail.allow_tags = True
 
     def get_tags(self):
-        return "<br/>".join([p.tag for p in self.tags.all()[:5]])
+        return ", <br/>".join([p.tag for p in self.tags.all()[:5]])
 
     get_tags.short_description = 'tags'
     get_tags.allow_tags = True
 
     def get_cores(self):
-        return "<br/>".join([p.cor for p in self.cores.all()[:5]])
+        return ", <br/>".join([p.cor for p in self.cores.all()[:5]])
 
     get_cores.short_description = "cores"
     get_cores.allow_tags = True
