@@ -1,8 +1,9 @@
 from django.db import models
-from decimal import Decimal
 from django.core.validators import MinValueValidator
-from django.contrib.humanize.templatetags.humanize import naturalday
+# from django.contrib.humanize.templatetags.humanize import naturalday
 from django.utils import timezone
+
+from decimal import Decimal
 
 
 NOTA_CHOICES = (
@@ -53,13 +54,14 @@ class Cidade(models.Model):
                               choices=ESTADOS_CHOICES,
                               default='PR')
     anotacoes = models.TextField("anotações", blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.cidade
 
     class Meta:
-        ordering = ('cidade', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Shopping(models.Model):
@@ -70,13 +72,14 @@ class Shopping(models.Model):
     bairro = models.CharField(max_length=30, blank=True)
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ('nome', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Guia(models.Model):
@@ -88,13 +91,14 @@ class Guia(models.Model):
     shoppings = models.ManyToManyField(Shopping)
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ('nome', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Loja(models.Model):
@@ -116,13 +120,14 @@ class Loja(models.Model):
     telefone = models.PositiveSmallIntegerField(blank=True, null=True)
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ('nome', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Marca(models.Model):
@@ -130,7 +135,8 @@ class Marca(models.Model):
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
     imagem = models.ImageField(upload_to='uploads/imagens/marcas', blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
@@ -140,7 +146,7 @@ class Marca(models.Model):
         return ("id__iexact", "nome__icontains",)
 
     class Meta:
-        ordering = ('nome', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Viagem(models.Model):
@@ -181,37 +187,37 @@ class Viagem(models.Model):
                                        decimal_places=2,
                                        default=Decimal('0.00'),
                                        validators=[MinValueValidator(Decimal('0.00'))])
-    pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
-        nome = str(self.cidade) + ' ' + ' (' + (self.pub_date).strftime('%d/%m/%Y') + ')'
+        nome = str(self.cidade) + ' ' + ' (' + (self.data).strftime('%d/%m/%Y') + ')'
         return nome
 
-    @property
     def combustivel(self):
         return "R$%s" % self.custo_combustivel if self.custo_combustivel else ""
 
-    @property
+    combustivel.short_description = 'combustível'
+
     def pedagios(self):
         return "R$%s" % self.custo_pedagios if self.custo_pedagios else ""
 
-    @property
+    pedagios.short_description = 'pedágios'
+
     def alimentacao(self):
         return "R$%s" % self.custo_alimentacao if self.custo_alimentacao else ""
 
-    @property
+    alimentacao.short_description = 'alimentação'
+
     def estacionamento(self):
         return "R$%s" % self.custo_estacionamento if self.custo_estacionamento else ""
 
-    @property
     def transporte(self):
         return "R$%s" % self.custo_transporte if self.custo_transporte else ""
 
-    @property
     def hospedagem(self):
         return "R$%s" % self.custo_hospedagem if self.custo_hospedagem else ""
 
-    @property
     def outros(self):
         return "R$%s" % self.custo_outros if self.custo_outros else ""
 
@@ -221,7 +227,7 @@ class Viagem(models.Model):
         return "R$%s" % calculo if calculo else ""
 
     class Meta:
-        ordering = ('data', 'pub_date')
+        ordering = ('data_de_edicao',)
         verbose_name_plural = 'viagens'
 
 
@@ -234,14 +240,15 @@ class Recibo(models.Model):
     tipo = models.CharField(max_length=1, choices=RECIBO_CHOICES, default=1)
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
     viagem = models.ForeignKey(Viagem)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
-        nome = str(self.loja) + ' ' + ' (' + (self.pub_date).strftime('%d/%m/%Y, %H:%M') + ')'
+        nome = str(self.loja) + ' ' + ' (' + str(self.viagem) + ')'
         return nome
 
     class Meta:
-        ordering = ('pub_date',)
+        ordering = ('data_de_edicao',)
 
 
 class Venda(models.Model):
@@ -287,13 +294,14 @@ class Venda(models.Model):
                                           choices=PARCELA_CHOICES,
                                           default='2', blank=True)
 
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ('data', 'pub_date')
+        ordering = ('data_de_edicao',)
 
 
 class Peca(models.Model):
@@ -303,11 +311,14 @@ class Peca(models.Model):
     valor_venda = models.DecimalField("valor venda", max_digits=5,
                                       decimal_places=2,
                                       blank=True, null=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.peca
 
     class Meta:
+        ordering = ('data_de_edicao',)
         verbose_name = "peça"
 
 
@@ -319,3 +330,8 @@ class Parcela(models.Model):
                                 decimal_places=2,
                                 default=Decimal('0.00'),
                                 validators=[MinValueValidator(Decimal('0.00'))])
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
+
+    class Meta:
+        ordering = ('data_de_edicao',)

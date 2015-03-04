@@ -41,6 +41,22 @@ class PecaAdmin(admin.ModelAdmin):
                       ]}),
     ]
     inlines = [QuantidadeDePecasPorTamanhoInline]
+    list_display = (
+                    'thumbnail',
+                    'nome',
+                    'categoria',
+                    'get_tags',
+                    'marca',
+                    'genero',
+                    'get_cores',
+                    'custo_unitario',
+                    'preco_unitario',
+                    'preco_unitario_promocional',
+                    'lucro_unitario',
+                    'data_de_cadastro',
+                    'data_de_edicao'
+                    )
+    search_fields = ('categoria',)
 
     class Media:
         js = [
@@ -49,8 +65,27 @@ class PecaAdmin(admin.ModelAdmin):
         ]
 
 
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = (
+                    'categoria',
+                    'data_de_criacao',
+                    'data_de_edicao'
+                    )
+    search_fields = ('categoria',)
+
+
+class CorAdmin(admin.ModelAdmin):
+    list_display = (
+                    'cor',
+                    'circulo',
+                    'data_de_criacao',
+                    'data_de_edicao'
+                    )
+    search_fields = ('cor',)
+
+
 admin.site.register(Peca, PecaAdmin)
-admin.site.register(CategoriaDaPeca)
-admin.site.register(CorDaPeca)
+admin.site.register(CategoriaDaPeca, CategoriaAdmin)
+admin.site.register(CorDaPeca, CorAdmin)
 admin.site.register(TamanhoDaPeca)
 admin.site.register(TagsDaPeca)

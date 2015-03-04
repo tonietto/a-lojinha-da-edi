@@ -12,10 +12,11 @@ class Cliente(models.Model):
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
     bairro = models.CharField(max_length=30, blank=True)
     anotacoes = models.TextField("anotações", blank=True)
-    pub_date = models.DateTimeField("data de cadastro", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ('nome', 'pub_date')
+        ordering = ('data_de_edicao', 'nome')

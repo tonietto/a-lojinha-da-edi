@@ -1,10 +1,14 @@
 from django.db import models
-from decimal import Decimal
 from django.core.validators import MinValueValidator
+from django.utils.html import format_html
+
+from decimal import Decimal
 
 
 class CategoriaDaPeca(models.Model):
     categoria = models.CharField(max_length=30, unique=True)
+    data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.categoria
@@ -14,7 +18,7 @@ class CategoriaDaPeca(models.Model):
         return ("id__iexact", "categoria__icontains",)
 
     class Meta:
-        ordering = ('categoria',)
+        ordering = ('data_de_edicao',)
         verbose_name = 'categoria'
 
 
@@ -24,34 +28,44 @@ class CorDaPeca(models.Model):
                               max_length=7,
                               blank=True,
                               help_text='Código HEX da cor. Escolha em http://goo.gl/ZEQ38K. Ex.: #FFFFFF (Branco).')
+    data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.cor
+
+    def circulo(self):
+        return format_html('<svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="#efefef" stroke-width="1" fill="{0}" /></svg> ',
+                           self.codigo)
+    circulo.allow_tags = True
 
     @staticmethod
     def autocomplete_search_fields():
         return ("id__iexact", "cor__icontains",)
 
     class Meta:
-        ordering = ('cor',)
+        ordering = ('data_de_edicao',)
         verbose_name = 'cor'
         verbose_name_plural = 'cores'
 
 
 class TamanhoDaPeca(models.Model):
     tamanho = models.CharField(max_length=3, unique=True)
+    data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.tamanho
 
     class Meta:
-        ordering = ('tamanho',)
+        ordering = ('data_de_edicao',)
         verbose_name = 'tamanho'
 
 
 class TagsDaPeca(models.Model):
     tag = models.CharField(max_length=30, unique=True)
-    pub_date = models.DateTimeField("data de criação", auto_now_add=True)
+    data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.tag
@@ -61,7 +75,7 @@ class TagsDaPeca(models.Model):
         return ("id__iexact", "tag__icontains",)
 
     class Meta:
-        ordering = ('pub_date', 'tag',)
+        ordering = ('data_de_edicao',)
 
 
 class Peca(models.Model):
@@ -98,27 +112,59 @@ class Peca(models.Model):
                                          decimal_places=2,
                                          default=Decimal('0.00'),
                                          validators=[MinValueValidator(Decimal('0.00'))])
-    preco_unitario_promocional = models.DecimalField("preço promocional R$",
+    preco_unitario_promocional = models.DecimalField("promoção R$",
                                                      max_digits=5,
                                                      decimal_places=2,
-                                                     default=Decimal('0.00'),
                                                      validators=[MinValueValidator(Decimal('0.00'))],
                                                      blank=True, null=True)
-    pub_date = models.DateTimeField("data de publicacao", auto_now_add=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
         return self.nome
 
+    def thumbnail(self):
+        return format_html('<div style="width: 30px; height: 30px; background-color: #fff; border-radius: 100px;"><img href="../../../{0}" style="width:100%;" ></div>',
+                           self.imagem_1)
+    thumbnail.short_description = 'Imagem'
+    thumbnail.allow_tags = True
+
+    def get_tags(self):
+        return "<br/>".join([p.tag for p in self.tags.all()[:5]])
+
+    get_tags.short_description = 'tags'
+    get_tags.allow_tags = True
+
+    def get_cores(self):
+        return "<br/>".join([p.cor for p in self.cores.all()[:5]])
+
+    get_cores.short_description = "cores"
+    get_cores.allow_tags = True
+
+    def lucro_unitario(self):
+        if self.preco_unitario_promocional:
+            calculo = self.preco_unitario_promocional - self.custo_unitario
+        else:
+            calculo = self.preco_unitario - self.custo_unitario
+        return "R$%s" % calculo if calculo else ""
+
+    lucro_unitario.short_description = 'lucro unit.'
+
     class Meta:
-        ordering = ('pub_date', 'nome')
+        ordering = ('data_de_edicao',)
         verbose_name = 'peça'
 
 
 class QuantidadeDePecasPorTamanho(models.Model):
     peca = models.ForeignKey(Peca)
     tamanho = models.ForeignKey(TamanhoDaPeca)
+    data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
     """
     ex.: PPP, P, 36
     """
     quantidade_comprada = models.PositiveSmallIntegerField(default=0)
     quantidade_em_estoque = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ('data_de_edicao',)

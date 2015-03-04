@@ -9,6 +9,8 @@ agora = timezone.now()
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __unicode__(self):
         return '%s' % self.nome
@@ -20,6 +22,9 @@ class Categoria(models.Model):
     def get_absolute_url(self):
         return ('view_blog_categoria', None, {'slug': self.slug})
 
+    class Meta:
+        ordering = ('data_de_edicao',)
+
 
 class Post(models.Model):
     titulo = models.CharField("título", max_length=100, blank=True)
@@ -28,7 +33,8 @@ class Post(models.Model):
     texto = models.TextField()
     categoria = models.ManyToManyField(Categoria)
     edicao = models.DateTimeField("editado em", default=agora)
-    pub_date = models.DateTimeField("data de publicação", default=agora)
+    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+    data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __unicode__(self):
         return '%s' % self.titulo
@@ -39,3 +45,6 @@ class Post(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('view_blog_post', None, {'slug': self.slug})
+
+    class Meta:
+        ordering = ('data_de_edicao',)
