@@ -20,8 +20,16 @@ class Cliente(models.Model):
     def __str__(self):
         return self.nome
 
+    def nome_completo(self):
+        return format_html(self.nome + ' ' + self.sobrenome)
+
+    def get_telefone(self):
+        return "(%c%c)%c%c%c%c-%c%c%c%c" % tuple(map(ord, str(self.telefone)))
+
+    nome_completo.allow_tags = True
+
     def endereco(self):
-        return format_html(self.rua + ', ' + str(self.numero) + ', ' + self.complemento + '. ' + str(self.cidade) + '.')
+        return format_html(self.rua + ', ' + str(self.numero) + ', ' + self.complemento + '. ' + self.bairro + ' - <strong>' + str(self.cidade) + '</strong>.')
 
     endereco.short_description = 'endereço'
     endereco.allow_tags = True

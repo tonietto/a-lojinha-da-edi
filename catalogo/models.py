@@ -57,6 +57,10 @@ class TamanhoDaPeca(models.Model):
     def __str__(self):
         return self.tamanho
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "tamanho__icontains",)
+
     class Meta:
         ordering = ('data_de_edicao',)
         verbose_name = 'tamanho'
@@ -76,6 +80,7 @@ class TagsDaPeca(models.Model):
 
     class Meta:
         ordering = ('data_de_edicao',)
+        verbose_name_plural = 'tags das peças'
 
 
 class Peca(models.Model):
@@ -150,13 +155,17 @@ class Peca(models.Model):
 
     lucro_unitario.short_description = 'lucro unit.'
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "nome__icontains",)
+
     class Meta:
         ordering = ('data_de_edicao',)
         verbose_name = 'peça'
 
 
 class QuantidadeDePecasPorTamanho(models.Model):
-    peca = models.ForeignKey(Peca)
+    id_peca = models.ForeignKey(Peca)
     tamanho = models.ForeignKey(TamanhoDaPeca)
     data_de_criacao = models.DateTimeField("criação", auto_now_add=True)
     data_de_edicao = models.DateTimeField("edição", auto_now=True)
@@ -165,6 +174,9 @@ class QuantidadeDePecasPorTamanho(models.Model):
     """
     quantidade_comprada = models.PositiveSmallIntegerField(default=0)
     quantidade_em_estoque = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.tamanho)
 
     class Meta:
         ordering = ('data_de_edicao',)

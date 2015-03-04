@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 # from django.contrib.humanize.templatetags.humanize import naturalday
 from django.utils import timezone
+from django.utils.html import format_html
 
 from decimal import Decimal
 
@@ -73,6 +74,7 @@ class Shopping(models.Model):
     cidade = models.ForeignKey(Cidade)
     rua = models.CharField(max_length=150, blank=True)
     numero = models.PositiveSmallIntegerField("número", blank=True, null=True)
+    complemento = models.CharField(max_length=30, blank=True, null=True)
     bairro = models.CharField(max_length=30, blank=True)
     nota = models.CharField(max_length=1, choices=NOTA_CHOICES, default=3)
     anotacoes = models.TextField("anotações", blank=True)
@@ -81,6 +83,16 @@ class Shopping(models.Model):
 
     def __str__(self):
         return self.nome
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "nome__icontains",)
+
+    def endereco(self):
+        return format_html(self.rua + ', ' + str(self.numero) + ', ' + str(self.complemento) + '. ' + self.bairro + ' - <strong>' + str(self.cidade) + '</strong>.')
+
+    endereco.short_description = 'endereço'
+    endereco.allow_tags = True
 
     class Meta:
         ordering = ('data_de_edicao',)
@@ -100,6 +112,20 @@ class Guia(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def nome_completo(self):
+        return format_html(self.nome + ' ' + self.sobrenome)
+
+    def get_telefone(self):
+        return "(%c%c)%c%c%c%c-%c%c%c%c" % tuple(map(ord, str(self.telefone)))
+
+    get_telefone.short_description = 'telefone'
+
+    def get_shoppings(self):
+        return ", <br/>".join([p.nome for p in self.shoppings.all()[:5]])
+
+    get_shoppings.short_description = 'shoppings'
+    get_shoppings.allow_tags = True
 
     class Meta:
         ordering = ('data_de_edicao',)
@@ -129,6 +155,16 @@ class Loja(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def get_telefone(self):
+        return "(%c%c)%c%c%c%c-%c%c%c%c" % tuple(map(ord, str(self.telefone)))
+
+    get_telefone.short_description = 'telefone'
+
+    def get_cnpj(self):
+        return "%c%c.%c%c%c.%c%c%c/%c%c%c%c-%c%c" % tuple(map(ord, str(self.cnpj)))
+
+    get_cnpj.short_description = 'cnpj'
 
     class Meta:
         ordering = ('data_de_edicao',)
@@ -230,6 +266,10 @@ class Viagem(models.Model):
         calculo = self.custo_combustivel + self.custo_pedagios + self.custo_alimentacao + self.custo_estacionamento + self.custo_transporte + self.custo_hospedagem + self.custo_outros
         return "R$%s" % calculo if calculo else ""
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "nome__icontains",)
+
     class Meta:
         ordering = ('data_de_edicao',)
         verbose_name_plural = 'viagens'
@@ -302,7 +342,8 @@ class Venda(models.Model):
     data_de_edicao = models.DateTimeField("edição", auto_now=True)
 
     def __str__(self):
-        return self.nome
+        nome = str(self.cliente) + ' ' + ' (' + str(self.data) + ')'
+        return nome
 
     class Meta:
         ordering = ('data_de_edicao',)
@@ -311,6 +352,7 @@ class Venda(models.Model):
 class Peca(models.Model):
     venda = models.ForeignKey(Venda)
     peca = models.ManyToManyField('catalogo.Peca', verbose_name='peça')
+    tamanhos = models.ManyToManyField('catalogo.TamanhoDaPeca')
     quantidade = models.PositiveSmallIntegerField(default=1)
     valor_venda = models.DecimalField("valor venda", max_digits=5,
                                       decimal_places=2,

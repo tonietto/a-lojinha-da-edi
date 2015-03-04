@@ -8,11 +8,22 @@ class ClienteAdmin(admin.ModelAdmin):
         'fk': ['cidade'],
     }
     list_display = (
-                    'nome',
-                    'sobrenome',
+                    'nome_completo',
+                    'get_telefone',
                     'email',
-                    'telefone',
                     'endereco',
                     )
+    search_fields = (
+                     'nome',
+                     'sobrenome',
+                     'email',
+                     'telefone',
+                     'foto',
+                     'rua',
+                     'numero',
+                     'complemento',
+                     'bairro',
+                     'anotacoes',
+                     )
 
 admin.site.register(Cliente, ClienteAdmin)
