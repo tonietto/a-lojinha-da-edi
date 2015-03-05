@@ -54,6 +54,10 @@ class ParcelaInline(admin.TabularInline):
 
 
 class VendaAdmin(admin.ModelAdmin):
+    raw_id_fields = ('cliente',)
+    autocomplete_lookup_fields = {
+        'fk': ['cliente', ],
+    }
     fieldsets = [
         (None, {
             "classes": ("grp-collapse grp-open",),
@@ -64,6 +68,8 @@ class VendaAdmin(admin.ModelAdmin):
                        'forma_caderninho',
                        'forma_cartao',
                        'numero_de_parcelas',
+                       'status_venda',
+                       'status_peca',
                        ]}),
     ]
     inlines = [PecaInline, ParcelaInline]

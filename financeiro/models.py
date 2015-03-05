@@ -305,8 +305,7 @@ class Venda(models.Model):
         ('PGS', 'PagSeguro'),
     )
     forma_de_pagamento = models.CharField(max_length=3,
-                                          choices=FORMA_DE_PAGAMENTO_CHOICES,
-                                          default='DIN')
+                                          choices=FORMA_DE_PAGAMENTO_CHOICES)
     CADERNINHO_CHOICES = (
         ('DIN', 'dinheiro'),
         ('PAR', 'parcelado'),
@@ -316,7 +315,6 @@ class Venda(models.Model):
                         "forma de pagamento no caderninho",
                         max_length=3,
                         choices=CADERNINHO_CHOICES,
-                        default='PAR',
                         blank=True)
     CARTAO_CHOICES = (
         ('C', 'crédito'),
@@ -326,7 +324,6 @@ class Venda(models.Model):
                     "forma de pagamento no cartão",
                     max_length=1,
                     choices=CARTAO_CHOICES,
-                    default='C',
                     blank=True)
     PARCELA_CHOICES = (
         ('1', '1x'),
@@ -336,14 +333,35 @@ class Venda(models.Model):
     )
     numero_de_parcelas = models.CharField(max_length=1,
                                           choices=PARCELA_CHOICES,
-                                          default='2', blank=True)
-
-    data_de_cadastro = models.DateTimeField("cadastro", auto_now_add=True)
+                                          blank=True)
+    STATUS_VENDA_CHOICES = (
+        ('0', 'aberta'),
+        ('1', 'encerrada'),
+    )
+    status_venda = models.CharField(
+                                    max_length=1,
+                                    choices=STATUS_VENDA_CHOICES,
+                                    default=0,
+                                    blank=True, null=True
+                                    )
+    STATUS_PECA_CHOICES = (
+        ('0', 'aguardando cliente'),
+        ('1', 'em trânsito'),
+        ('2', 'entregue'),
+    )
+    status_peca = models.CharField(
+                                   "status peça",
+                                   max_length=1,
+                                   choices=STATUS_PECA_CHOICES,
+                                   blank=True, null=True
+                                   )
+    data_de_cadastro = models.DateTimeField("abertura", auto_now_add=True)
     data_de_edicao = models.DateTimeField("edição", auto_now=True)
+    data_de_fechamento = models.DateTimeField("fechamento",
+                                              blank=True, null=True)  # To-do
 
     def __str__(self):
-        nome = str(self.cliente) + ' ' + ' (' + str(self.data) + ')'
-        return nome
+        return str(self.cliente) + ' ' + ' (' + str(self.data) + ')'
 
     class Meta:
         ordering = ('data_de_edicao',)

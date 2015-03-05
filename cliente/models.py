@@ -34,5 +34,9 @@ class Cliente(models.Model):
     endereco.short_description = 'endereço'
     endereco.allow_tags = True
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "nome__icontains",)
+
     class Meta:
         ordering = ('data_de_edicao', 'nome')

@@ -107,6 +107,7 @@ class Peca(models.Model):
     recibo = models.ForeignKey('financeiro.Recibo',
                                blank=True,
                                null=True)
+    referencia_original = models.CharField("referência original", max_length=30, blank=True, null=True)
     custo_unitario = models.DecimalField("custo R$",
                                          max_digits=5,
                                          decimal_places=2,

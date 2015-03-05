@@ -37,6 +37,7 @@ class PecaAdmin(admin.ModelAdmin):
             "classes": ("grp-collapse grp-open",),
             'fields': [
                       'recibo',
+                      'referencia_original',
                       ('custo_unitario', 'preco_unitario', 'preco_unitario_promocional',),
                       ]}),
     ]
@@ -49,6 +50,7 @@ class PecaAdmin(admin.ModelAdmin):
                     'marca',
                     'genero',
                     'get_cores',
+                    'referencia_original',
                     'custo_unitario',
                     'preco_unitario',
                     'preco_unitario_promocional',
@@ -59,6 +61,7 @@ class PecaAdmin(admin.ModelAdmin):
     search_fields = (
                      'nome',
                      'genero',
+                     'referencia_original',
                      'data_de_cadastro',
                      'data_de_edicao',
                      )
